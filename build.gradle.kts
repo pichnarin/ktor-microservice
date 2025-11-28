@@ -8,7 +8,6 @@ plugins {
     kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "2.3.7"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
-    application
 }
 
 group = "com.example"
@@ -16,9 +15,6 @@ version = "1.0.0"
 
 application {
     mainClass.set("com.example.ApplicationKt")
-
-    val isDevelopment: Boolean = project.ext.has("development")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
 repositories {
@@ -31,29 +27,15 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    
-    // Status Pages for error handling
     implementation("io.ktor:ktor-server-status-pages-jvm")
-    
-    // Call logging
     implementation("io.ktor:ktor-server-call-logging-jvm")
-    
-    // Auth
     implementation("io.ktor:ktor-server-auth-jvm")
     implementation("io.ktor:ktor-server-auth-jwt-jvm")
-    
-    // CORS
     implementation("io.ktor:ktor-server-cors-jvm")
-    
-    // Metrics and monitoring
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
     implementation("io.micrometer:micrometer-registry-prometheus:1.12.0")
-    
-    // OpenAPI/Swagger
     implementation("io.ktor:ktor-server-openapi")
     implementation("io.ktor:ktor-server-swagger")
-    
-    // Validation
     implementation("io.ktor:ktor-server-request-validation")
     
     // Database - Exposed ORM
@@ -61,27 +43,19 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
-    
-    // Database driver and connection pool
     implementation("org.postgresql:postgresql:42.7.1")
     implementation("com.zaxxer:HikariCP:5.1.0")
-    
-    // Migration
-    implementation("org.flywaydb:flyway-core:10.4.1")
-    implementation("org.flywaydb:flyway-database-postgresql:10.4.1")
-    
-    // Dependency Injection - Koin
+
+    // DI
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
-    
-    // Configuration
     implementation("com.typesafe:config:1.4.3")
     
-    // Kotlin coroutines
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     
     // Testing
@@ -92,6 +66,13 @@ dependencies {
     testImplementation("io.insert-koin:koin-test:$koin_version")
     testImplementation("io.insert-koin:koin-test-junit4:$koin_version")
     testImplementation("com.h2database:h2:2.2.224")
+}
+
+// Use Ktor's built-in fat JAR task
+ktor {
+    fatJar {
+        archiveFileName.set("app-all.jar")
+    }
 }
 
 tasks.test {
