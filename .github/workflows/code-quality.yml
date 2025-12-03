@@ -84,7 +84,7 @@ jobs:
         run: ./gradlew dependencies --no-daemon > dependencies.txt
       
       - name: Upload dependency report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: dependency-report
           path: dependencies.txt
